@@ -1,13 +1,16 @@
 pipeline {
     agent any
-    
+
     tools{
-      maven 'Maven 3.6.1'	
+      maven 'maven 3.6.1'
     }
 
 
     stages {
         stage('build') {
+	   when{
+	     changeset "**/worker/**"
+           }
             steps {
                 echo 'Compiling worker app'
                 dir('worker'){
@@ -16,22 +19,40 @@ pipeline {
             }
         }
         stage('test') {
-            steps {
+           when{
+	     changeset "**/worker/**"
+           }
+             steps {
                 echo 'Running Unit Tests on worker app'
-            
+		dir('worker'){
+		  sh 'mvn clean test'
+       	      }
             }
         }
 
         stage('package') {
+	    when{
+              branch 'master'
+	      changeset "**/worker/**"
+	    }
             steps {
                 echo 'Packaging worker app'
-            
+		dir('worker'){
+		  sh 'mvn package -DskipTests'
+            	archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+             }
             }
         }
     }
     post {
         always{
-            echo 'Build pipeline for worker is complete..'
-        }   
+            echo 'Pipeline for worker is complete..'
+        }
+        failure{
+            slackSend (channel: "général", message: "Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+        }
+        success{
+            slackSend (channel: "général", message: "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+        }
     }
 }
