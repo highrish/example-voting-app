@@ -1,8 +1,8 @@
 pipeline {
     agent any
-    
+
     tools{
-      maven 'maven 3.6.1'	
+      maven 'maven 3.6.1'
     }
 
 
@@ -21,12 +21,12 @@ pipeline {
         stage('test') {
            when{
 	     changeset "**/worker/**"
-           } 
+           }
              steps {
                 echo 'Running Unit Tests on worker app'
 		dir('worker'){
 		  sh 'mvn clean test'
-       	      }            
+       	      }
             }
         }
 
@@ -47,6 +47,12 @@ pipeline {
     post {
         always{
             echo 'Pipeline for worker is complete..'
-        }   
+        }
+        failure{
+            slackSend (channel: "général", message: "Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+        }
+        success{
+            slackSend (channel: "général", message: "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+        }
     }
 }
