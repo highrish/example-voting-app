@@ -4,14 +4,15 @@ pipeline {
 
       stages {
         stage('build') {
+          agent{
+            docker{
+              image 'node:8.16.0-alpine'
+             }
+          }
 	   when{
 	     changeset "**/result/**"
            }
-           agent{
-             docker{
-               image 'node:8.16.0-alpine'
-              }
-           }
+
             steps {
                 echo 'Compiling result app'
                 dir('result'){
@@ -20,14 +21,15 @@ pipeline {
             }
         }
         stage('test') {
+          agent{
+            docker{
+              image 'node:8.16.0-alpine'
+             }
+            }
            when{
 	     changeset "**/result/**"
            }
-           agent{
-             docker{
-               image 'node:8.16.0-alpine'
-              }
-             }
+
            }
              steps {
                 echo 'Running Unit Tests on result app'
