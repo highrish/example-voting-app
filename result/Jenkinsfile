@@ -9,10 +9,6 @@ pipeline {
               image 'node:8.16.0-alpine'
              }
           }
-	 /*   when{
-	     changeset "**/result/**"
-           } */
-
             steps {
                 echo 'Compiling result app'
                 dir('result'){
@@ -26,10 +22,6 @@ pipeline {
               image 'node:8.16.0-alpine'
              }
             }
-      /*     when{
-	     changeset "**/result/**"
-           } */
-
            }
              steps {
                 echo 'Running Unit Tests on result app'
@@ -40,10 +32,6 @@ pipeline {
         }
         stage('docker-package'){
             agent any
-        /*    when{
-              changeset "**/worker/**"
-              branch 'master'
-            } */
             steps{
               echo 'Packaging result app with docker'
               script{

@@ -4,10 +4,6 @@ pipeline {
 
   stages{
       stage("build"){
-        when{
-            changeset "**/worker/**"
-          }
-
         agent{
           docker{
             image 'maven:3.6.1-jdk-8-slim'
@@ -29,9 +25,6 @@ pipeline {
             args '-v $HOME/.m2:/root/.m2'
           }
         }
-        when{
-          changeset "**/worker/**"
-        }
 
         steps{
           echo 'Running Unit Tets on worker app..'
@@ -48,10 +41,6 @@ pipeline {
             args '-v $HOME/.m2:/root/.m2'
           }
         }
-        when{
-          branch 'master'
-          changeset "**/worker/**"
-        }
 
         steps{
           echo 'Packaging worker app'
@@ -65,10 +54,6 @@ pipeline {
 
       stage('docker-package'){
           agent any
-          when{
-            changeset "**/worker/**"
-            branch 'master'
-          }
           steps{
             echo 'Packaging worker app with docker'
             script{
