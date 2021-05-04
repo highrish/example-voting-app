@@ -84,11 +84,11 @@ pipeline {
             image 'node:8.16.0-alpine'
            }
           }
-         }
+
            steps {
               echo 'Running Unit Tests on result app'
-  dir('result'){
-    sh 'npm test'
+              dir('result'){
+                sh 'npm test'
             }
           }
       }
@@ -126,14 +126,14 @@ pipeline {
             args '--user root'
            }
           }
-         }
+
            steps {
               echo 'Running Unit Tests on vote app'
   dir('vote'){
     sh 'nosetests -v'
             }
           }
-
+        }
       stage('vote-docker-package'){
           agent any
           steps{
@@ -147,6 +147,7 @@ pipeline {
             }
           }
       }
+    }
 
 
   post{
