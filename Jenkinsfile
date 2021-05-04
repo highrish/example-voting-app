@@ -133,7 +133,7 @@ pipeline {
     sh 'nosetests -v'
             }
           }
-      }
+
       stage('vote-docker-package'){
           agent any
           steps{
@@ -147,7 +147,7 @@ pipeline {
             }
           }
       }
-  }
+
 
   post{
     always{
