@@ -88,7 +88,7 @@ pipeline {
            steps {
               echo 'Running Unit Tests on result app'
               dir('result'){
-            /*    sh 'npm test' */
+                sh 'npm test'
             }
           }
       }
