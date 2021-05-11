@@ -10,9 +10,6 @@ pipeline {
             args '-v $HOME/.m2:/root/.m2'
           }
         }
-        /*when{
-          changeset "**/worker/**"
-        }*/
         steps{
           echo 'Compiling worker app..'
           dir('worker'){
@@ -72,9 +69,6 @@ pipeline {
             image 'node:8.16.0-alpine'
            }
         }
-        /*when{
-          changeset "**/result/**"
-        }*/
           steps {
               echo 'Compiling result app'
               dir('result'){
@@ -117,9 +111,6 @@ pipeline {
             args '--user root'
            }
         }
-        /*when{
-          changeset "**/vote/**"
-        }*/
           steps {
               echo 'Compiling vote app'
               dir('vote'){
