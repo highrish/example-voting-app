@@ -53,7 +53,6 @@ pipeline {
 
         }
       }
-
       stage('worker-docker-package'){
           agent any
           steps{
@@ -93,7 +92,8 @@ pipeline {
            steps {
               echo 'Running Unit Tests on result app'
               dir('result'){
-            /*   sh 'npm test' */
+                sh 'npm install'
+                sh 'npm test'
             }
           }
       }
@@ -137,11 +137,12 @@ pipeline {
 
            steps {
               echo 'Running Unit Tests on vote app'
-  dir('vote'){
-    sh 'nosetests -v'
+              dir('vote'){
+                sh 'pip install -r requirements.txt'
+                sh 'nosetests -v'
             }
           }
-        }
+      }
       stage('vote-docker-package'){
           agent any
           steps{
@@ -156,7 +157,6 @@ pipeline {
           }
       }
     }
-
 
   post{
     always{
